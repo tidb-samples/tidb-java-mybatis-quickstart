@@ -1,0 +1,34 @@
+APP: recreateTable()
+APP: COMMIT;
+APP: createPlayers() --> 1
+APP: COMMIT;
+APP: COMMIT;
+PlayerDAO.getPlayer:
+    => id: test
+    => coins: 1
+    => goods: 1
+APP: COMMIT;
+PlayerDAO.countPlayers:
+    => 1 total players
+
+[printPlayers]:
+com.pingcap.model.Player@2da59753
+APP: COMMIT;
+APP: createPlayers() --> 2
+APP: COMMIT;
+PlayerDAO.createPlayers:
+    => 2 total inserted players
+
+PlayerDAO.buyGoods:
+    => this trade will fail
+APP: ROLLBACK BY LOGIC; 
+coins or goods not enough, rollback
+PlayerDAO.buyGoods:
+    => null total update players
+
+PlayerDAO.buyGoods:
+    => this trade will success
+APP: buyGoods --> sell: 2, buy: 1, amount: 2, price: 100
+APP: COMMIT;
+PlayerDAO.buyGoods:
+    => 2 total update players
